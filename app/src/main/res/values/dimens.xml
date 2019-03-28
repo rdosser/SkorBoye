@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="score_button_size">60dp</dimen>
+    <dimen name="score_text_size">60sp</dimen>
+    <dimen name="score_end_margin">10dp</dimen>
+    <dimen name="score_top_margin">8dp</dimen>
+</resources>
