@@ -19,15 +19,11 @@ import java.util.List;
 public class PlayFragment extends Fragment {
 
     public static final String TAG = "PlayFragment";
-    public static final int DEFAULT_SCORE = 5;
-    public static final int DEFAULT_NUM_PLAYERS = 5;
+    public static final int DEFAULT_SCORE = 50;
+    public static final int DEFAULT_NUM_PLAYERS = 4;
     public static final String ARG_NUM_PLAYERS = "num_players";
 
     private int numPlayers = 0;
-
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager layoutManager;
 
     public static PlayFragment newInstance(int numPlayers) {
         Bundle args = new Bundle();
@@ -55,8 +51,8 @@ public class PlayFragment extends Fragment {
             numPlayers = DEFAULT_NUM_PLAYERS;
         }
 
-        recyclerView = view.findViewById(R.id.recyclerview);
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         List<PlayerScore> playerScores = new ArrayList<>();
@@ -66,7 +62,7 @@ public class PlayFragment extends Fragment {
             playerScores.add(new PlayerScore("Player " + ordinal, DEFAULT_SCORE));
         }
 
-        mAdapter = new RowViewAdapter(playerScores);
+        RecyclerView.Adapter mAdapter = new RowViewAdapter(playerScores);
         recyclerView.setAdapter(mAdapter);
 
         // TODO - Allow add/remove of players
