@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/view_header"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="Start A New Game"
+        android:textSize="60sp"
+    />
+
+    <TextView
+        android:id="@+id/meter_view_label"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:text="How many players?"
+        android:textSize="40sp"
+    />
+
+    <com.alexzaitsev.meternumberpicker.MeterView
+        android:id="@+id/num_players_meter_view"
+        style="@style/MeterViewStyle"
+        app:layout_constraintStart_toEndOf="@id/meter_view_label"
+        app:layout_constraintTop_toBottomOf="@id/view_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+    />
+
+    <Button
+        android:id="@+id/start_game_button"
+        app:layout_constraintTop_toBottomOf="@id/meter_view_label"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteX="53dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:layout_marginStart="120dp"
+        android:textSize="30sp"
+        android:text="Start Game"
+    />
+
+
+</android.support.constraint.ConstraintLayout>

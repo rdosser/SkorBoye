@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NewGameFragment.StartNewGameClickListener {
 
     public static final String TAG = "MainActivity";
 
@@ -14,8 +14,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        PlayFragment playFragment = new PlayFragment();
-        showFragment(playFragment, false);
+        NewGameFragment newGameFragment = new NewGameFragment();
+        showFragment(newGameFragment, false);
 
         // TODO - add a hamburger menu
         // - new game
@@ -33,4 +33,9 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    @Override
+    public void startNewGameClicked(int numPlayers) {
+        PlayFragment playFragment = PlayFragment.newInstance(numPlayers);
+        showFragment(playFragment, false);
+    }
 }

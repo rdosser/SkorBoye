@@ -20,10 +20,22 @@ public class PlayFragment extends Fragment {
 
     public static final String TAG = "PlayFragment";
     public static final int DEFAULT_SCORE = 5;
+    public static final int DEFAULT_NUM_PLAYERS = 5;
+    public static final String ARG_NUM_PLAYERS = "num_players";
+
+    private int numPlayers = 0;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
+
+    public static PlayFragment newInstance(int numPlayers) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_NUM_PLAYERS, numPlayers);
+        PlayFragment playFragment = new PlayFragment();
+        playFragment.setArguments(args);
+        return playFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,17 +48,23 @@ public class PlayFragment extends Fragment {
             @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_play, container, false);
 
+        if (getArguments() != null) {
+            numPlayers = getArguments().getInt(ARG_NUM_PLAYERS);
+        }
+        if (numPlayers == 0) {
+            numPlayers = DEFAULT_NUM_PLAYERS;
+        }
+
         recyclerView = view.findViewById(R.id.recyclerview);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
         List<PlayerScore> playerScores = new ArrayList<>();
-        playerScores.add(new PlayerScore("Player 1", DEFAULT_SCORE));
-        playerScores.add(new PlayerScore("Player 2", DEFAULT_SCORE));
-        playerScores.add(new PlayerScore("Player 3", DEFAULT_SCORE));
-        playerScores.add(new PlayerScore("Player 4", DEFAULT_SCORE));
-        playerScores.add(new PlayerScore("Player 5", DEFAULT_SCORE));
-        playerScores.add(new PlayerScore("Player 6", DEFAULT_SCORE));
+
+        for (int i = 0; i < numPlayers; i++) {
+            String ordinal = String.valueOf(i + 1);
+            playerScores.add(new PlayerScore("Player " + ordinal, DEFAULT_SCORE));
+        }
 
         mAdapter = new RowViewAdapter(playerScores);
         recyclerView.setAdapter(mAdapter);
