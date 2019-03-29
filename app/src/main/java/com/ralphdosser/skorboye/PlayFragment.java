@@ -46,6 +46,7 @@ public class PlayFragment extends Fragment {
         playerScores.add(new PlayerScore("Player 3", DEFAULT_SCORE));
         playerScores.add(new PlayerScore("Player 4", DEFAULT_SCORE));
         playerScores.add(new PlayerScore("Player 5", DEFAULT_SCORE));
+        playerScores.add(new PlayerScore("Player 6", DEFAULT_SCORE));
 
         mAdapter = new RowViewAdapter(playerScores);
         recyclerView.setAdapter(mAdapter);

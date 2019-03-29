@@ -55,9 +55,8 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
             mediaPlayerClickPlus = MediaPlayer.create(context, R.raw.click_plus);
             mediaPlayerFail = MediaPlayer.create(context, R.raw.sad_trumpet);
 
-            deadColorResource = context.getColor(R.color.transparentBlack);
-            aliveColorResource = context.getColor(R.color.white);
-
+            deadColorResource = context.getResources().getColor(R.color.transparentBlack);
+            aliveColorResource = context.getResources().getColor(R.color.white);
         }
     }
 
