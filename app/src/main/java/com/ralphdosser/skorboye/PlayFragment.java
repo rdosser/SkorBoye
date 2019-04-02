@@ -1,5 +1,6 @@
 package com.ralphdosser.skorboye;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,12 +17,16 @@ import com.ralphdosser.skorboye.models.PlayerScore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlayFragment extends Fragment {
+public class PlayFragment extends Fragment implements RowViewAdapter.ClickListener {
 
     public static final String TAG = "PlayFragment";
     public static final int DEFAULT_SCORE = 50;
     public static final int DEFAULT_NUM_PLAYERS = 4;
     public static final String ARG_NUM_PLAYERS = "num_players";
+
+    private MediaPlayer mediaPlayerClickMinus;
+    private MediaPlayer mediaPlayerClickPlus;
+    private MediaPlayer mediaPlayerFail;
 
     private int numPlayers = 0;
 
@@ -62,11 +67,32 @@ public class PlayFragment extends Fragment {
             playerScores.add(new PlayerScore("Player " + ordinal, DEFAULT_SCORE));
         }
 
-        RecyclerView.Adapter mAdapter = new RowViewAdapter(playerScores);
+        RecyclerView.Adapter mAdapter = new RowViewAdapter(playerScores, this);
         recyclerView.setAdapter(mAdapter);
 
-        // TODO - Allow add/remove of players
+        mediaPlayerClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
+        mediaPlayerClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
+        mediaPlayerFail = MediaPlayer.create(getContext(), R.raw.sad_trumpet);
+
+        mediaPlayerClickMinus.setVolume(1.0f,1.0f);
+        mediaPlayerClickPlus.setVolume(1.0f,1.0f);
+        mediaPlayerFail.setVolume(1.0f,1.0f);
 
         return view;
+    }
+
+    @Override
+    public void onPlusClick() {
+        mediaPlayerClickPlus.start();
+    }
+
+    @Override
+    public void onMinusClick() {
+        mediaPlayerClickMinus.start();
+    }
+
+    @Override
+    public void onFail() {
+        mediaPlayerFail.start();
     }
 }

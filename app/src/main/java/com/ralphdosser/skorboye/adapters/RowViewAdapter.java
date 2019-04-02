@@ -1,7 +1,6 @@
 package com.ralphdosser.skorboye.adapters;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,6 +19,14 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
 
     private List<PlayerScore> playerScores;
 
+    private ClickListener clickListener;
+
+    public interface ClickListener {
+        void onPlusClick();
+        void onMinusClick();
+        void onFail();
+    }
+
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
@@ -35,9 +42,6 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
         int deadColorResource;
         int aliveColorResource;
 
-        private MediaPlayer mediaPlayerClickMinus;
-        private MediaPlayer mediaPlayerClickPlus;
-        private MediaPlayer mediaPlayerFail;
 
         RowViewHolder(View itemView, Context context) {
             super(itemView);
@@ -51,9 +55,8 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
 
             this.context = context;
 
-            mediaPlayerClickMinus = MediaPlayer.create(context, R.raw.click_minus);
-            mediaPlayerClickPlus = MediaPlayer.create(context, R.raw.click_plus);
-            mediaPlayerFail = MediaPlayer.create(context, R.raw.sad_trumpet);
+            plusButton.setSoundEffectsEnabled(false);
+            minusButton.setSoundEffectsEnabled(false);
 
             deadColorResource = context.getResources().getColor(R.color.transparentBlack);
             aliveColorResource = context.getResources().getColor(R.color.white);
@@ -61,7 +64,8 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public RowViewAdapter(List<PlayerScore> playerScores) {
+    public RowViewAdapter(List<PlayerScore> playerScores, ClickListener clickListener) {
+        this.clickListener = clickListener;
         this.playerScores = playerScores;
     }
 
@@ -86,7 +90,7 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
                 if (holder.playerScore.getScore() == 0) {
                     holder.parentLayout.setBackgroundColor(holder.aliveColorResource);
                 }
-                holder.mediaPlayerClickPlus.start();
+                clickListener.onPlusClick();
                 holder.playerScore.setScore(holder.playerScore.getScore() + 1);
                 holder.scoreTextView.setText(String.valueOf(holder.playerScore.getScore()));
             }
@@ -96,11 +100,11 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
             @Override
             public void onClick(View view) {
                 if (holder.playerScore.getScore() > 0) {
-                    holder.mediaPlayerClickMinus.start();
+                    clickListener.onMinusClick();
                     holder.playerScore.setScore(holder.playerScore.getScore() - 1);
                     holder.scoreTextView.setText(String.valueOf(holder.playerScore.getScore()));
                     if (holder.playerScore.getScore() == 0) {
-                        holder.mediaPlayerFail.start();
+                        clickListener.onFail();
                         holder.parentLayout.setBackgroundColor(holder.deadColorResource);
                     }
                 }
