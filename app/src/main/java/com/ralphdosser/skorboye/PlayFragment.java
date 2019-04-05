@@ -20,19 +20,21 @@ import java.util.List;
 public class PlayFragment extends Fragment implements RowViewAdapter.ClickListener {
 
     public static final String TAG = "PlayFragment";
-    public static final int DEFAULT_SCORE = 50;
     public static final int DEFAULT_NUM_PLAYERS = 4;
     public static final String ARG_NUM_PLAYERS = "num_players";
+    public static final String ARG_DEFAULT_SCORE = "default_score";
 
     private MediaPlayer mediaPlayerClickMinus;
     private MediaPlayer mediaPlayerClickPlus;
     private MediaPlayer mediaPlayerFail;
 
     private int numPlayers = 0;
+    private int defaultScore = 0;
 
-    public static PlayFragment newInstance(int numPlayers) {
+    public static PlayFragment newInstance(int numPlayers, int defaultScore) {
         Bundle args = new Bundle();
         args.putInt(ARG_NUM_PLAYERS, numPlayers);
+        args.putInt(ARG_DEFAULT_SCORE, defaultScore);
         PlayFragment playFragment = new PlayFragment();
         playFragment.setArguments(args);
         return playFragment;
@@ -51,6 +53,7 @@ public class PlayFragment extends Fragment implements RowViewAdapter.ClickListen
 
         if (getArguments() != null) {
             numPlayers = getArguments().getInt(ARG_NUM_PLAYERS);
+            defaultScore  = getArguments().getInt(ARG_DEFAULT_SCORE);
         }
         if (numPlayers == 0) {
             numPlayers = DEFAULT_NUM_PLAYERS;
@@ -64,7 +67,7 @@ public class PlayFragment extends Fragment implements RowViewAdapter.ClickListen
 
         for (int i = 0; i < numPlayers; i++) {
             String ordinal = String.valueOf(i + 1);
-            playerScores.add(new PlayerScore("Player " + ordinal, DEFAULT_SCORE));
+            playerScores.add(new PlayerScore("Player " + ordinal, defaultScore));
         }
 
         RecyclerView.Adapter mAdapter = new RowViewAdapter(playerScores, this);
@@ -94,5 +97,10 @@ public class PlayFragment extends Fragment implements RowViewAdapter.ClickListen
     @Override
     public void onFail() {
         mediaPlayerFail.start();
+    }
+
+    @Override
+    public void setPlayerScore(int playerIndex, int playerScore) {
+
     }
 }

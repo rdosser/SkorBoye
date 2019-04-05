@@ -25,6 +25,7 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
         void onPlusClick();
         void onMinusClick();
         void onFail();
+        void setPlayerScore(int playerIndex, int playerScore);
     }
 
     // Provide a reference to the views for each data item

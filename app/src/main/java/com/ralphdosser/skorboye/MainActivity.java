@@ -79,8 +79,8 @@ public class MainActivity extends AppCompatActivity implements NewGameFragment.S
     }
 
     @Override
-    public void startNewGameClicked(int numPlayers) {
-        PlayFragment playFragment = PlayFragment.newInstance(numPlayers);
+    public void startNewGameClicked(int numPlayers, int defaultScore) {
+        PlayFragment playFragment = PlayFragment.newInstance(numPlayers, defaultScore);
         showFragment(playFragment, false);
     }
 }
