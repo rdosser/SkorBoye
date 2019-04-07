@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.ralphdosser.skorboye.Providers.ResourceProvider;
 import com.ralphdosser.skorboye.R;
 import com.ralphdosser.skorboye.models.PlayerScore;
 
@@ -22,9 +23,6 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
     private ClickListener clickListener;
 
     public interface ClickListener {
-        void onPlusClick();
-        void onMinusClick();
-        void onFail();
         void setPlayerScore(int playerIndex, int playerScore);
     }
 
@@ -91,7 +89,7 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
                 if (holder.playerScore.getScore() == 0) {
                     holder.parentLayout.setBackgroundColor(holder.aliveColorResource);
                 }
-                clickListener.onPlusClick();
+                ResourceProvider.getInstance().playClickPlus();
                 holder.playerScore.setScore(holder.playerScore.getScore() + 1);
                 holder.scoreTextView.setText(String.valueOf(holder.playerScore.getScore()));
             }
@@ -101,11 +99,11 @@ public class RowViewAdapter extends RecyclerView.Adapter<RowViewAdapter.RowViewH
             @Override
             public void onClick(View view) {
                 if (holder.playerScore.getScore() > 0) {
-                    clickListener.onMinusClick();
+                    ResourceProvider.getInstance().playClickMinus();
                     holder.playerScore.setScore(holder.playerScore.getScore() - 1);
                     holder.scoreTextView.setText(String.valueOf(holder.playerScore.getScore()));
                     if (holder.playerScore.getScore() == 0) {
-                        clickListener.onFail();
+                        ResourceProvider.getInstance().playFail();
                         holder.parentLayout.setBackgroundColor(holder.deadColorResource);
                     }
                 }

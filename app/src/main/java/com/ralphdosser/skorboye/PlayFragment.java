@@ -1,6 +1,5 @@
 package com.ralphdosser.skorboye;
 
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,10 +22,6 @@ public class PlayFragment extends Fragment implements RowViewAdapter.ClickListen
     public static final int DEFAULT_NUM_PLAYERS = 4;
     public static final String ARG_NUM_PLAYERS = "num_players";
     public static final String ARG_DEFAULT_SCORE = "default_score";
-
-    private MediaPlayer mediaPlayerClickMinus;
-    private MediaPlayer mediaPlayerClickPlus;
-    private MediaPlayer mediaPlayerFail;
 
     private int numPlayers = 0;
     private int defaultScore = 0;
@@ -73,30 +68,7 @@ public class PlayFragment extends Fragment implements RowViewAdapter.ClickListen
         RecyclerView.Adapter mAdapter = new RowViewAdapter(playerScores, this);
         recyclerView.setAdapter(mAdapter);
 
-        mediaPlayerClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
-        mediaPlayerClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
-        mediaPlayerFail = MediaPlayer.create(getContext(), R.raw.sad_trumpet);
-
-        mediaPlayerClickMinus.setVolume(1.0f,1.0f);
-        mediaPlayerClickPlus.setVolume(1.0f,1.0f);
-        mediaPlayerFail.setVolume(1.0f,1.0f);
-
         return view;
-    }
-
-    @Override
-    public void onPlusClick() {
-        mediaPlayerClickPlus.start();
-    }
-
-    @Override
-    public void onMinusClick() {
-        mediaPlayerClickMinus.start();
-    }
-
-    @Override
-    public void onFail() {
-        mediaPlayerFail.start();
     }
 
     @Override

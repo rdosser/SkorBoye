@@ -1,7 +1,6 @@
 package com.ralphdosser.skorboye;
 
 import android.annotation.SuppressLint;
-import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
@@ -16,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.alexzaitsev.meternumberpicker.MeterView;
+import com.ralphdosser.skorboye.Providers.ResourceProvider;
 
 public class NewGameFragment extends Fragment {
 
@@ -26,8 +26,6 @@ public class NewGameFragment extends Fragment {
     public static final int DEFAULT_SCORE = 50;
     public static final int MIN_NUM_PLAYERS = 1;
     public static final int MAX_NUM_PLAYERS = 6;
-    public static final float LEFT_VOLUME = 1.0f;
-    public static final float RIGHT_VOLUME = 1.0f;
     public static final int COUNTER_DELAY_MILLIS = 50;
 
     Button startGameButton;
@@ -37,9 +35,6 @@ public class NewGameFragment extends Fragment {
     ImageButton numPlayersMinusButton;
     ImageView defaultScorePlusButton;
     ImageButton defaultScoreMinusButton;
-
-    private MediaPlayer mediaPlayerClickMinus;
-    private MediaPlayer mediaPlayerClickPlus;
 
     private boolean autoIncrement = false;
     private boolean autoDecrement = false;
@@ -77,12 +72,6 @@ public class NewGameFragment extends Fragment {
 
         defaultScoreMinusButton = view.findViewById(R.id.default_score_minus_button);
         defaultScoreMinusButton.setSoundEffectsEnabled(false);
-
-        mediaPlayerClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
-        mediaPlayerClickMinus.setVolume(LEFT_VOLUME, RIGHT_VOLUME);
-
-        mediaPlayerClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
-        mediaPlayerClickPlus.setVolume(LEFT_VOLUME, RIGHT_VOLUME);
 
         numPlayersPlusButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -193,7 +182,7 @@ public class NewGameFragment extends Fragment {
         int defaultScore = meterView.getValue();
         if (defaultScore > floorValue) {
             meterView.setValue(defaultScore - 1);
-            mediaPlayerClickMinus.start();
+            ResourceProvider.getInstance().playClickMinus();
         }
     }
 
@@ -201,7 +190,7 @@ public class NewGameFragment extends Fragment {
         int defaultScore = meterView.getValue();
         if (defaultScore < ceilValue) {
             meterView.setValue(defaultScore + 1);
-            mediaPlayerClickPlus.start();
+            ResourceProvider.getInstance().playClickPlus();
         }
     }
 
