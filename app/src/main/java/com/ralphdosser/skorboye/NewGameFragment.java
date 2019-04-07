@@ -1,15 +1,19 @@
 package com.ralphdosser.skorboye;
 
+import android.annotation.SuppressLint;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.alexzaitsev.meternumberpicker.MeterView;
 
@@ -17,18 +21,28 @@ public class NewGameFragment extends Fragment {
 
     public static final String TAG = "NewGameFragment";
 
+    public static final int MIN_SCORE = 0;
+    public static final int MAX_SCORE = 99;
+    public static final int DEFAULT_SCORE = 50;
+    public static final int MIN_NUM_PLAYERS = 1;
+    public static final int MAX_NUM_PLAYERS = 6;
+    public static final float LEFT_VOLUME = 1.0f;
+    public static final float RIGHT_VOLUME = 1.0f;
+    public static final int COUNTER_DELAY_MILLIS = 50;
+
     Button startGameButton;
     MeterView numPlayersMeterView;
     MeterView defaultScoreMeterView;
     ImageButton numPlayersPlusButton;
     ImageButton numPlayersMinusButton;
-    ImageButton defaultScorePlusButton;
+    ImageView defaultScorePlusButton;
     ImageButton defaultScoreMinusButton;
 
-    private MediaPlayer mediaPlayerNumPlayersClickMinus;
-    private MediaPlayer mediaPlayerNumPlayersClickPlus;
-    private MediaPlayer mediaPlayerdefaultScoreClickMinus;
-    private MediaPlayer mediaPlayerdefaultScoreClickPlus;
+    private MediaPlayer mediaPlayerClickMinus;
+    private MediaPlayer mediaPlayerClickPlus;
+
+    private boolean autoIncrement = false;
+    private boolean autoDecrement = false;
 
     StartNewGameClickListener startNewGameClickListener;
 
@@ -37,6 +51,7 @@ public class NewGameFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -44,71 +59,122 @@ public class NewGameFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_new_game, container, false);
 
         startGameButton = view.findViewById(R.id.start_game_button);
+
         numPlayersMeterView = view.findViewById(R.id.num_players_meter_view);
-        numPlayersMeterView.setValue(1);
+        numPlayersMeterView.setValue(MIN_NUM_PLAYERS);
+
         defaultScoreMeterView = view.findViewById(R.id.default_score_meter_view);
-        defaultScoreMeterView.setValue(50);
+        defaultScoreMeterView.setValue(DEFAULT_SCORE);
 
         numPlayersPlusButton = view.findViewById(R.id.num_players_plus_button);
-        //numPlayersPlusButton.setSoundEffectsEnabled(false);
-        numPlayersMinusButton = view.findViewById(R.id.num_players_minus_button);
-        //numPlayersMinusButton.setSoundEffectsEnabled(false);
+        numPlayersPlusButton.setSoundEffectsEnabled(false);
 
-        mediaPlayerNumPlayersClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
-        mediaPlayerNumPlayersClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
-        mediaPlayerNumPlayersClickMinus.setVolume(1.0f,1.0f);
-        mediaPlayerNumPlayersClickPlus.setVolume(1.0f,1.0f);
+        numPlayersMinusButton = view.findViewById(R.id.num_players_minus_button);
+        numPlayersMinusButton.setSoundEffectsEnabled(false);
 
         defaultScorePlusButton = view.findViewById(R.id.default_score_plus_button);
-        //defaultScorePlusButton.setSoundEffectsEnabled(false);
+        defaultScorePlusButton.setSoundEffectsEnabled(false);
+
         defaultScoreMinusButton = view.findViewById(R.id.default_score_minus_button);
-        //defaultScoreMinusButton.setSoundEffectsEnabled(false);
+        defaultScoreMinusButton.setSoundEffectsEnabled(false);
 
-        mediaPlayerdefaultScoreClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
-        mediaPlayerdefaultScoreClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
-        mediaPlayerdefaultScoreClickMinus.setVolume(1.0f,1.0f);
-        mediaPlayerdefaultScoreClickPlus.setVolume(1.0f,1.0f);
+        mediaPlayerClickMinus = MediaPlayer.create(getContext(), R.raw.click_minus);
+        mediaPlayerClickMinus.setVolume(LEFT_VOLUME, RIGHT_VOLUME);
 
-        numPlayersPlusButton.setOnClickListener(new View.OnClickListener() {
+        mediaPlayerClickPlus = MediaPlayer.create(getContext(), R.raw.click_plus);
+        mediaPlayerClickPlus.setVolume(LEFT_VOLUME, RIGHT_VOLUME);
+
+        numPlayersPlusButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                int numPlayers = numPlayersMeterView.getValue();
-                if (numPlayers < 6) {
-                    numPlayersMeterView.setValue(numPlayers + 1);
-                    mediaPlayerNumPlayersClickPlus.start();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    incrementMeterView(numPlayersMeterView, MAX_NUM_PLAYERS);
                 }
+                return false;
             }
         });
 
-        numPlayersMinusButton.setOnClickListener(new View.OnClickListener() {
+        numPlayersMinusButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                int numPlayers = numPlayersMeterView.getValue();
-                if (numPlayers > 1) {
-                    numPlayersMeterView.setValue(numPlayers - 1);
-                    mediaPlayerNumPlayersClickMinus.start();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    decrementMeterViewViewer(numPlayersMeterView, MIN_NUM_PLAYERS);
                 }
+                return false;
             }
         });
 
-        defaultScorePlusButton.setOnClickListener(new View.OnClickListener() {
+        defaultScorePlusButton.setOnLongClickListener(new View.OnLongClickListener() {
+
+            private final Handler handler = new Handler();
+            private int counterDelay = COUNTER_DELAY_MILLIS;
+
+            private Runnable counterRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (autoIncrement) {
+                        incrementMeterView(defaultScoreMeterView, MAX_SCORE);
+                        handler.postDelayed(this, counterDelay);
+                    }
+                }
+
+            };
+
             @Override
-            public void onClick(View view) {
-                int defaultScore = defaultScoreMeterView.getValue();
-                defaultScoreMeterView.setValue(defaultScore + 1);
-                mediaPlayerNumPlayersClickPlus.start();
+            public boolean onLongClick(View view) {
+                autoIncrement = true;
+                counterRunnable.run();
+                return false;
             }
         });
 
-        defaultScoreMinusButton.setOnClickListener(new View.OnClickListener() {
+        defaultScorePlusButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View view) {
-                int defaultScore = defaultScoreMeterView.getValue();
-                if (defaultScore > 0) {
-                    defaultScoreMeterView.setValue(defaultScore - 1);
-                    mediaPlayerNumPlayersClickMinus.start();
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP && autoIncrement) {
+                    autoIncrement = false;
                 }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    incrementMeterView(defaultScoreMeterView, MAX_SCORE);
+                }
+                return false;
             }
+        });
+
+        defaultScoreMinusButton.setOnLongClickListener(new View.OnLongClickListener() {
+            private final Handler handler = new Handler();
+            private int counterDelay = 50; //millis
+            private Runnable counterRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (autoDecrement) {
+                        decrementMeterViewViewer(defaultScoreMeterView, MIN_SCORE);
+                        handler.postDelayed(this, counterDelay);
+                    }
+                }
+
+            };
+            @Override
+            public boolean onLongClick(View view) {
+                autoDecrement = true;
+                counterRunnable.run();
+                return false;
+            }
+        });
+
+        defaultScoreMinusButton.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP && autoDecrement) {
+                    autoDecrement = false;
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    decrementMeterViewViewer(defaultScoreMeterView, MIN_SCORE);
+                }
+                return false;
+            }
+
         });
 
         startNewGameClickListener = (StartNewGameClickListener) getActivity();
@@ -121,6 +187,22 @@ public class NewGameFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void decrementMeterViewViewer(MeterView meterView, int floorValue) {
+        int defaultScore = meterView.getValue();
+        if (defaultScore > floorValue) {
+            meterView.setValue(defaultScore - 1);
+            mediaPlayerClickMinus.start();
+        }
+    }
+
+    private void incrementMeterView(MeterView meterView, int ceilValue) {
+        int defaultScore = meterView.getValue();
+        if (defaultScore < ceilValue) {
+            meterView.setValue(defaultScore + 1);
+            mediaPlayerClickPlus.start();
+        }
     }
 
     public interface StartNewGameClickListener {
