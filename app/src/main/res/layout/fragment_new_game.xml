@@ -34,41 +34,49 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="20dp"
-            android:text="How many players?"
+            android:text="Num players"
             android:textSize="40sp"
         />
 
-        <com.alexzaitsev.meternumberpicker.MeterView
-            android:id="@+id/num_players_meter_view"
+        <com.ralphdosser.skorboye.views.TallyView
+            android:id="@+id/num_players_tally_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/num_players_plus_button"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/NumPlayersMeterViewStyle"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-        />
-
-        <ImageButton
-            android:id="@+id/num_players_plus_button"
-            app:layout_constraintEnd_toStartOf="@+id/num_players_minus_button"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/score_button_size"
-            android:layout_height="@dimen/score_button_size"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/plus_icon"/>
-
-        <ImageButton
-            android:id="@+id/num_players_minus_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/score_button_size"
-            android:layout_height="@dimen/score_button_size"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/minus_icon"/>
+        />
+
+        <!--<com.alexzaitsev.meternumberpicker.MeterView-->
+            <!--android:id="@+id/num_players_meter_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/num_players_plus_button"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--style="@style/NumPlayersMeterViewStyle"-->
+                <!--android:layout_marginStart="32dp"-->
+            <!--android:layout_marginTop="10dp"-->
+        <!--/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/num_players_plus_button"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/num_players_minus_button"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_width="@dimen/score_button_size"-->
+            <!--android:layout_height="@dimen/score_button_size"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:background="@drawable/plus_icon"/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/num_players_minus_button"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_width="@dimen/score_button_size"-->
+            <!--android:layout_height="@dimen/score_button_size"-->
+            <!--android:layout_marginStart="12dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:background="@drawable/minus_icon"/>-->
 
     </android.support.constraint.ConstraintLayout>
 
@@ -92,36 +100,44 @@
             android:textSize="40sp"
         />
 
-        <com.alexzaitsev.meternumberpicker.MeterView
-            android:id="@+id/default_score_meter_view"
+        <com.ralphdosser.skorboye.views.TallyView
+            android:id="@+id/default_score_tally_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@+id/default_score_plus_button"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/DefaultScoreMeterViewStyle"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="10dp"
-        />
-
-        <ImageButton
-            android:id="@+id/default_score_plus_button"
-            app:layout_constraintEnd_toStartOf="@+id/default_score_minus_button"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/score_button_size"
-            android:layout_height="@dimen/score_button_size"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/plus_icon"/>
-
-        <ImageButton
-            android:id="@+id/default_score_minus_button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_width="@dimen/score_button_size"
-            android:layout_height="@dimen/score_button_size"
-            android:layout_marginEnd="20dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/minus_icon"/>
+        />
+
+        <!--<com.alexzaitsev.meternumberpicker.MeterView-->
+            <!--android:id="@+id/default_score_meter_view"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/default_score_plus_button"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--style="@style/DefaultScoreMeterViewStyle"-->
+            <!--android:layout_marginStart="32dp"-->
+            <!--android:layout_marginTop="10dp"-->
+        <!--/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/default_score_plus_button"-->
+            <!--app:layout_constraintEnd_toStartOf="@+id/default_score_minus_button"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_width="@dimen/score_button_size"-->
+            <!--android:layout_height="@dimen/score_button_size"-->
+            <!--android:layout_marginEnd="12dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:background="@drawable/plus_icon"/>-->
+
+        <!--<ImageButton-->
+            <!--android:id="@+id/default_score_minus_button"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintTop_toTopOf="parent"-->
+            <!--android:layout_width="@dimen/score_button_size"-->
+            <!--android:layout_height="@dimen/score_button_size"-->
+            <!--android:layout_marginEnd="20dp"-->
+            <!--android:layout_marginTop="20dp"-->
+            <!--android:background="@drawable/minus_icon"/>-->
 
     </android.support.constraint.ConstraintLayout>
 

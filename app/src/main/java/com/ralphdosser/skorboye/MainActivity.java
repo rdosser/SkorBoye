@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NewGameFragment.S
 
     private void launchNewGameFragment() {
         NewGameFragment newGameFragment = new NewGameFragment();
-        showFragment(newGameFragment, false);
+        showFragment(newGameFragment, true);
     }
 
     @Override

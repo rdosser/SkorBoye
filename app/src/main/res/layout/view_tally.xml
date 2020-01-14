@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.alexzaitsev.meternumberpicker.MeterView
+        android:id="@+id/meter_view"
+        app:layout_constraintEnd_toStartOf="@+id/plus_button"
+        app:layout_constraintTop_toTopOf="parent"
+        style="@style/DefaultScoreMeterViewStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="28dp"
+        android:layout_marginTop="4dp"/>
+
+    <ImageButton
+        android:id="@+id/plus_button"
+        app:layout_constraintEnd_toStartOf="@+id/minus_button"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/score_button_size"
+        android:layout_height="@dimen/score_button_size"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/plus_icon"/>
+
+    <ImageButton
+        android:id="@+id/minus_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="@dimen/score_button_size"
+        android:layout_height="@dimen/score_button_size"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/minus_icon"/>
+
+
+</android.support.constraint.ConstraintLayout>
